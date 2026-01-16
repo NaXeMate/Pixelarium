@@ -1,6 +1,8 @@
 package com.edu.mqt.pixelarium.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.edu.mqt.pixelarium.model.vo.Email;
 
@@ -13,6 +15,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(mappedBy = "userId", 
+               cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders = new ArrayList<>();
 
     @Column(nullable = false, length = 55, unique = true)
     private String userame;
