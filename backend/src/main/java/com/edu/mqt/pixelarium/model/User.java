@@ -26,7 +26,8 @@ public class User {
     @Column(nullable = false, length = 100)
     private String surname;
 
-    @Column(nullable = false)
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "email", nullable = false, length = 255))
     private Email email;
 
     @Column(nullable = false)
