@@ -1,5 +1,6 @@
 package com.edu.mqt.pixelarium.model.vo;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -8,7 +9,8 @@ import jakarta.persistence.Enumerated;
 public class Status {
 
     @Enumerated(EnumType.STRING)
-    private StatusType type;
+    @Column(name = "status")
+    private StatusType status;
 
     public enum StatusType {
         DRAFT("DF", "Draft"),
@@ -43,15 +45,15 @@ public class Status {
 
     public Status() {}
 
-    public Status(StatusType type) {
-        this.type = type;
+    public Status(StatusType status) {
+        this.status = status;
     }
 
     public StatusType getType() {
-        return type;
+        return status;
     }
 
-    public void setType(StatusType type) {
-        this.type = type;
+    public void setType(StatusType status) {
+        this.status = status;
     }
 }

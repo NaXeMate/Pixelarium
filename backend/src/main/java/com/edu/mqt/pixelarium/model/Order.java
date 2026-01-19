@@ -26,7 +26,8 @@ public class Order {
     @Column(nullable = false)
     private Double totalPrice;
 
-    @Column(nullable = false, name = "status")
+    @Embedded
+    @AttributeOverride(name = "status", column = @Column(name = "status", nullable = false))
     private Status status;
 
     @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL,
