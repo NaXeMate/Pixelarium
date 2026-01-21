@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findByUserame(String userame);
-    List<User> findByRegisterDate(LocalDate registerTime);
+    User findByUserName(String userName);
+    boolean existsByUserName(String userName);
+    List<User> findByRegisterTime(LocalDate registerTime);
+    List<User> findByRegisterTimeAfter(LocalDate date);
 }

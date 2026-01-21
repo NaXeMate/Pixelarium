@@ -21,7 +21,7 @@ public class User {
     private List<Order> orders = new ArrayList<>();
 
     @Column(nullable = false, length = 55, unique = true)
-    private String userame;
+    private String userName;
 
     @Column(nullable = false, length = 55)
     private String password;
@@ -41,10 +41,10 @@ public class User {
 
     public User() {}
 
-    public User(Long id, String userame, String password, String realName, String surname, Email email,
+    public User(Long id, String userName, String password, String realName, String surname, Email email,
             LocalDate registerTime) {
         this.id = id;
-        this.userame = userame;
+        this.userName = userName;
         this.password = password;
         this.realName = realName;
         this.surname = surname;
@@ -60,12 +60,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUserame() {
-        return userame;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserame(String userame) {
-        this.userame = userame;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
