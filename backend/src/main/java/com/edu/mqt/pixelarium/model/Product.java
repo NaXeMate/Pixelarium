@@ -29,11 +29,11 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Column(nullable = true)
-    private BigDecimal sale_price;
+    @Column(nullable = true, name = "sale_price")
+    private BigDecimal salePrice;
 
-    @Column(nullable = true, length = 255)
-    private String image_path;
+    @Column(nullable = true, length = 255, name = "image_path")
+    private String imagePath;
 
     @Column(nullable = false)
     private Integer stock;
@@ -44,14 +44,14 @@ public class Product {
 
     public Product() {}
 
-    public Product(Long id, String name, String description, BigDecimal price, BigDecimal sale_price, String image_path,
+    public Product(Long id, String name, String description, BigDecimal price, BigDecimal salePrice, String imagePath,
             Integer stock, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.sale_price = sale_price;
-        this.image_path = image_path;
+        this.salePrice = salePrice;
+        this.imagePath = imagePath;
         this.stock = stock;
         this.category = category;
     }
@@ -88,20 +88,20 @@ public class Product {
         this.price = price;
     }
 
-    public BigDecimal getSale_price() {
-        return sale_price;
+    public BigDecimal getSalePrice() {
+        return salePrice;
     }
 
-    public void setSale_price(BigDecimal sale_price) {
-        this.sale_price = sale_price;
+    public void setSalePrice(BigDecimal salePrice) {
+        this.salePrice = salePrice;
     }
 
-    public String getImage_path() {
-        return image_path;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage_path(String image_path) {
-        this.image_path = image_path;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public Integer getStock() {
