@@ -12,6 +12,6 @@ import java.math.BigDecimal;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByPrice(BigDecimal price);
     List<Product> findBySalePrice(BigDecimal salePrice);
-    List<Category> findByCategory(Category category);
+    List<Product> findByCategory(Category category);
 
 }
