@@ -13,5 +13,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByOrderDate(LocalDateTime orderDate);
     List<Order> findByTotalPrice(Double totalPrice);
     List<Order> findByStatus(Status status);
-    List<Order> findByUserId(User userId);
+    List<Order> findByUserId(User user);
 }
