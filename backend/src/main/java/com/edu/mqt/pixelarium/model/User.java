@@ -20,7 +20,7 @@ public class User {
                cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
-    @Column(nullable = false, length = 55, unique = true)
+    @Column(nullable = false, length = 55, unique = true, name = "user_name")
     private String userName;
 
     @Column(nullable = false, length = 55)

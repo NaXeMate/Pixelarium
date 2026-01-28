@@ -1,5 +1,5 @@
 -- ===== USERS =====
-INSERT INTO users (id, userame, password, real_name, surname, email, register_time)
+INSERT INTO users (id, user_name, password, real_name, surname, email, register_time)
 VALUES
   (1, 'mqt',       'password123', 'Mateo', 'Quintela', 'mateo@pixelarium.dev', '2024-01-10'),
   (2, 'zelda_fan', 'hyrule2024',  'Link',  'Hyrule',   'link@pixelarium.dev',  '2024-02-15'),
