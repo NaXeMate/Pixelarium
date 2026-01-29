@@ -1,0 +1,16 @@
+package com.edu.mqt.pixelarium.model.dto;
+
+import java.math.BigDecimal;
+
+import com.edu.mqt.pixelarium.model.enumerated.Category;
+
+public record ProductDTOResponse(
+    Long id,
+    String name,
+    String description,
+    BigDecimal price,
+    BigDecimal salePrice,
+    String imagePath,
+    Integer stock,
+    Category category
+) {}
