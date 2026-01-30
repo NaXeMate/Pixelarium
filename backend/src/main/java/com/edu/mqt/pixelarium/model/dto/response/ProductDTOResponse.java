@@ -1,4 +1,4 @@
-package com.edu.mqt.pixelarium.model.dto;
+package com.edu.mqt.pixelarium.model.dto.response;
 
 import java.math.BigDecimal;
 
