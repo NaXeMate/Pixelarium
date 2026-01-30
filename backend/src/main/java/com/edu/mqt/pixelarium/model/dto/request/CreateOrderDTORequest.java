@@ -2,7 +2,7 @@ package com.edu.mqt.pixelarium.model.dto.request;
 
 import java.util.List;
 
-public record CreateOrderRequestDTO(
+public record CreateOrderDTORequest(
     Long userId,
-    List<OrderItemRequestDTO> items
+    List<OrderItemDTORequest> items
 ) {}
