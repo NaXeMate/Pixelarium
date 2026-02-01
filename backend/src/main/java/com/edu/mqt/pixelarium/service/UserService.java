@@ -54,6 +54,8 @@ public class UserService {
         System.out.println("User successfully deleted from the database.");
     }
 
+    // ========= CUSTOM METHODS =========
+
     @Transactional(readOnly = true)
     public User getUserByUserName(String userName) {
         return userRepo.findByUserName(userName);
