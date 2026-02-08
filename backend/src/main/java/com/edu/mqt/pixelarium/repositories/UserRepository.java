@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.edu.mqt.pixelarium.model.User;
+import com.edu.mqt.pixelarium.model.vo.Email;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,6 +14,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.userName = :userName")
     User findByUserName(@Param("userName") String userName);
+
+    @Query("SELECT u FROM User u WHERE u.email = :email")
+    User findByEmail(@Param("email") Email email);
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END " +
            "FROM User u WHERE u.email = :email")

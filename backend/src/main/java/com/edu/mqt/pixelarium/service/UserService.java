@@ -59,19 +59,16 @@ public class UserService {
     // ========= CUSTOM METHODS =========
 
     public User createUser(CreateUserDTORequest userDTO) {
-    // Validar que el email no esté duplicado
-    String email = userDTO.email();
+        String email = userDTO.email();
     if (userRepo.existsByEmail(email)) {
         throw new IllegalArgumentException("Email already exists: " + email);
     }
     
-    // Validar que el userName no esté duplicado
     String userName = userDTO.userName();
     if (userRepo.existsByUserName(userName)) {
         throw new IllegalArgumentException("Username already exists: " + userName);
     }
     
-    // Crear la nueva entidad User
     User newUser = new User();
     
     newUser.setUserName(userName);
@@ -84,20 +81,20 @@ public class UserService {
     return userRepo.save(newUser);
 }
 
-/**
- * Codifica la contraseña (usa BCryptPasswordEncoder o similar)
- * Por ahora, placeholder para que entiendas la idea
- */
-private String encodePassword(String rawPassword) {
-    // TODO: Inyectar BCryptPasswordEncoder y usar
-    // return passwordEncoder.encode(rawPassword);
-    return rawPassword; // Temporal: solo para compilar
-}
-
+    private String encodePassword(String rawPassword) {
+        // TODO: Inyectar BCryptPasswordEncoder y usar
+        // return passwordEncoder.encode(rawPassword);
+        return rawPassword;
+    }
 
     @Transactional(readOnly = true)
     public User getUserByUserName(String userName) {
         return userRepo.findByUserName(userName);
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserByEmail(Email email) {
+        return userRepo.findByEmail(email);
     }
 
     @Transactional(readOnly = true)
