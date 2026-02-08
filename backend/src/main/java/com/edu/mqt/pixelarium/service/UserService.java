@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.edu.mqt.pixelarium.model.User;
+import com.edu.mqt.pixelarium.model.dto.request.CreateUserDTORequest;
+import com.edu.mqt.pixelarium.model.vo.Email;
 import com.edu.mqt.pixelarium.repositories.UserRepository;
 
 @Service
@@ -56,13 +58,55 @@ public class UserService {
 
     // ========= CUSTOM METHODS =========
 
+    public User createUser(CreateUserDTORequest userDTO) {
+    // Validar que el email no esté duplicado
+    String email = userDTO.email();
+    if (userRepo.existsByEmail(email)) {
+        throw new IllegalArgumentException("Email already exists: " + email);
+    }
+    
+    // Validar que el userName no esté duplicado
+    String userName = userDTO.userName();
+    if (userRepo.existsByUserName(userName)) {
+        throw new IllegalArgumentException("Username already exists: " + userName);
+    }
+    
+    // Crear la nueva entidad User
+    User newUser = new User();
+    
+    newUser.setUserName(userName);
+    newUser.setPassword(encodePassword(userDTO.password())); // Codificar password
+    newUser.setRealName(userDTO.firstName());
+    newUser.setSurname(userDTO.lastName());
+    newUser.setEmail(new Email(userDTO.email()));
+    newUser.setRegisterTime(LocalDate.now());
+    
+    return userRepo.save(newUser);
+}
+
+/**
+ * Codifica la contraseña (usa BCryptPasswordEncoder o similar)
+ * Por ahora, placeholder para que entiendas la idea
+ */
+private String encodePassword(String rawPassword) {
+    // TODO: Inyectar BCryptPasswordEncoder y usar
+    // return passwordEncoder.encode(rawPassword);
+    return rawPassword; // Temporal: solo para compilar
+}
+
+
     @Transactional(readOnly = true)
     public User getUserByUserName(String userName) {
         return userRepo.findByUserName(userName);
     }
 
     @Transactional(readOnly = true)
-    public boolean existsByName(String userName) {
+    public boolean existsByEmail(String email) {
+        return userRepo.existsByEmail(email);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean existsByUserName(String userName) {
         return userRepo.existsByUserName(userName);
     }
 
