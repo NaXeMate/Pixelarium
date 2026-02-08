@@ -66,5 +66,5 @@ public class UserController {
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         User user = userService.getUserByEmail(new Email(email));
         return ResponseEntity.ok(user);
-    }   
+    }
 }
