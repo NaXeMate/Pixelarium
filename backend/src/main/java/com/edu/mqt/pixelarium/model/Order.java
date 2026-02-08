@@ -1,5 +1,6 @@
 package com.edu.mqt.pixelarium.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,13 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
     @Column(nullable = false, name = "order_date")
     private LocalDateTime orderDate;
 
     @Column(nullable = false)
-    private Double totalPrice;
+    private BigDecimal totalPrice;
 
     @Embedded
     @AttributeOverride(name = "status", column = @Column(name = "status", nullable = false))
@@ -34,12 +35,23 @@ public class Order {
                fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    public Order() {}
+    public Order() {
+        this.orderDate = LocalDateTime.now();
+    }
 
-    public Order(Long id, User userId, LocalDateTime orderDate, Double totalPrice, Status status,
+    public Order(User user, LocalDateTime orderDate, BigDecimal totalPrice, Status status,
+            List<OrderItem> orderItems) {
+        this.user = user;
+        this.orderDate = LocalDateTime.now();
+        this.totalPrice = totalPrice;
+        this.status = status;
+        this.orderItems = orderItems;
+    }
+
+    public Order(Long id, User user, LocalDateTime orderDate, BigDecimal totalPrice, Status status,
             List<OrderItem> orderItems) {
         this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.orderDate = LocalDateTime.now();
         this.totalPrice = totalPrice;
         this.status = status;
@@ -54,12 +66,12 @@ public class Order {
         this.id = id;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getOrderDate() {
@@ -70,11 +82,11 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public Double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 

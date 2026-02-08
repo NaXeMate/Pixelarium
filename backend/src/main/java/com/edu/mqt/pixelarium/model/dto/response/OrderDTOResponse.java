@@ -1,5 +1,6 @@
 package com.edu.mqt.pixelarium.model.dto.response;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public record OrderDTOResponse(
     Long id,
     Long userId,
     LocalDateTime orderDate,
-    Double totalPrice,
+    BigDecimal totalPrice,
     Status status,
     List<OrderItemDTOResponse> orderItems
 ) {}
