@@ -15,6 +15,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p " +
            "WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :namePart, '%'))")
     List<Product> findByNameContainingIgnoreCase(@Param("namePart") String namePart);
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN TRUE ELSE FALSE END " +
+           "FROM Product p WHERE p.name = :name")
+    boolean existsByName(@Param("name") String name);
 
     @Query("SELECT p FROM Product p WHERE p.price = :price")
     List<Product> findByPrice(@Param("price") BigDecimal price);
@@ -42,5 +45,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
            "WHERE p.category = :category AND p.price BETWEEN :min AND :max")
     List<Product> findByCategoryAndPriceBetween(@Param("category") Category category,
                                                 @Param("min") BigDecimal min,
-                                                @Param("max") BigDecimal max);
+                                                @Param("max") BigDecimal max);    
 }
