@@ -18,7 +18,7 @@ public class EntityToDtoMapper {
     public static OrderDTOResponse toOrderDTO(Order order) {
         return new OrderDTOResponse(
             order.getId(),
-            order.getUserId().getId(),
+            order.getUser().getId(),
             order.getOrderDate(),
             order.getTotalPrice(),
             order.getStatus(),
