@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.edu.mqt.pixelarium.model.Product;
+import com.edu.mqt.pixelarium.model.dto.request.CreateProductDTORequest;
 import com.edu.mqt.pixelarium.model.enumerated.Category;
 import com.edu.mqt.pixelarium.repositories.ProductRepository;
 
@@ -56,6 +57,42 @@ public class ProductService {
     }
 
     // ========= CUSTOM METHODS =========
+
+    public Product createProduct(CreateProductDTORequest productDTO) {
+    String name = productDTO.name();
+    if (productRepo.existsByName(name)) {
+        throw new IllegalArgumentException("Product already exists with name: " + name);
+    }
+    
+    if (productDTO.price().compareTo(BigDecimal.ZERO) < 0) {
+        throw new IllegalArgumentException("Price cannot be negative!");
+    }
+    
+    if (productDTO.stock() < 0) {
+        throw new IllegalArgumentException("Stock cannot be negative!");
+    }
+    
+    if (productDTO.salePrice() != null) {
+        if (productDTO.salePrice().compareTo(productDTO.price()) >= 0) {
+            throw new IllegalArgumentException("Sale price must be lower than regular price!");
+        }
+        if (productDTO.salePrice().compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Sale price cannot be negative!");
+        }
+    }
+    
+    Product newProduct = new Product();
+    
+    newProduct.setName(productDTO.name());
+    newProduct.setDescription(productDTO.description());
+    newProduct.setPrice(productDTO.price());
+    newProduct.setSalePrice(productDTO.salePrice());
+    newProduct.setImagePath(productDTO.imagePath());
+    newProduct.setStock(productDTO.stock());
+    newProduct.setCategory(productDTO.category());
+    
+    return productRepo.save(newProduct);
+}
 
     @Transactional(readOnly = true)
     public List<Product> getByNameContainingIgnoreCase(String namePart) {

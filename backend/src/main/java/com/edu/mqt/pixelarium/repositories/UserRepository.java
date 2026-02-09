@@ -8,11 +8,18 @@ import com.edu.mqt.pixelarium.model.User;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.userName = :userName")
     User findByUserName(@Param("userName") String userName);
+
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.email.value = :emailValue")
+    boolean existsByEmail(@Param("emailValue") String emailValue);
+    
+    @Query("SELECT u FROM User u WHERE u.email.value = :emailValue")
+    Optional<User> findByEmail(@Param("emailValue") String emailValue);
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END " +
            "FROM User u WHERE u.userName = :userName")

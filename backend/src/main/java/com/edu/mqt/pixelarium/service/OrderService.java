@@ -111,29 +111,29 @@ public class OrderService {
         return orderItem;
     }
 
-    public void changeOrderStatus(Long orderId, Status newStatus) {
+    public Order changeOrderStatus(Long orderId, Status newStatus) {
         Order changingOrder = getOrderById(orderId);
 
         if (changingOrder.getStatus().getType() == StatusType.PENDING && (newStatus.getType() == StatusType.DRAFT 
         || newStatus.getType() == StatusType.DELIVERED)) {
             System.out.println("The new order status is not compatible with the current one. No changes have been made.");
-            return;
+            return null;
         }
         
         if (changingOrder.getStatus().getType() == StatusType.SENT && (newStatus.getType() == StatusType.PENDING
          || newStatus.getType() == StatusType.DRAFT)) {
             System.out.println("The new order status is not compatible with the current one. No changes have been made.");
-            return;
+            return null;
         }
 
         if (changingOrder.getStatus().getType() == StatusType.DELIVERED && (newStatus.getType() == StatusType.SENT 
         || newStatus.getType() == StatusType.DRAFT)) {
             System.out.println("The new order status is not compatible with the current one. No changes have been made.");
-            return;
+            return null;
         }
 
         changingOrder.setStatus(newStatus);
-        orderRepo.save(changingOrder);
+        return orderRepo.save(changingOrder);
     }
 
     public void cancelOrder(Long orderId) {
