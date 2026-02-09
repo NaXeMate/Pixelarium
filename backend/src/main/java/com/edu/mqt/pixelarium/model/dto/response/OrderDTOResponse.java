@@ -6,6 +6,9 @@ import java.util.List;
 
 import com.edu.mqt.pixelarium.model.vo.Status;
 
+/**
+ * Represents an order in response payloads.
+ */
 public record OrderDTOResponse(
     Long id,
     Long userId,

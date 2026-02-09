@@ -2,6 +2,9 @@ package com.edu.mqt.pixelarium.model.dto.request;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a user creation request payload.
+ */
 public record CreateUserDTORequest(
     String email,
     String password,
@@ -10,4 +13,3 @@ public record CreateUserDTORequest(
     String userName,
     LocalDate registerTime
 ) {}
-

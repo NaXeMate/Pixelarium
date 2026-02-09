@@ -9,6 +9,9 @@ import com.edu.mqt.pixelarium.model.vo.Status;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents a persisted order and its line items.
+ */
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -35,10 +38,22 @@ public class Order {
                fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    /**
+     * Creates an order with the current timestamp as the order date.
+     */
     public Order() {
         this.orderDate = LocalDateTime.now();
     }
 
+    /**
+     * Creates an order with the provided data and sets the order date to now.
+     *
+     * @param user owning user
+     * @param orderDate ignored input date; the order date is set to now
+     * @param totalPrice total price for the order
+     * @param status status to assign
+     * @param orderItems line items to attach
+     */
     public Order(User user, LocalDateTime orderDate, BigDecimal totalPrice, Status status,
             List<OrderItem> orderItems) {
         this.user = user;
@@ -48,6 +63,16 @@ public class Order {
         this.orderItems = orderItems;
     }
 
+    /**
+     * Creates an order with the provided id and sets the order date to now.
+     *
+     * @param id order identifier
+     * @param user owning user
+     * @param orderDate ignored input date; the order date is set to now
+     * @param totalPrice total price for the order
+     * @param status status to assign
+     * @param orderItems line items to attach
+     */
     public Order(Long id, User user, LocalDateTime orderDate, BigDecimal totalPrice, Status status,
             List<OrderItem> orderItems) {
         this.id = id;

@@ -5,6 +5,9 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
+/**
+ * Represents the embeddable status value of an order.
+ */
 @Embeddable
 public class Status {
 
@@ -12,6 +15,9 @@ public class Status {
     @Column(name = "status")
     private StatusType status;
 
+    /**
+     * Enumerates the supported status types.
+     */
     public enum StatusType {
         DRAFT("DF", "Draft"),
         PENDING("PD", "Pending"),
@@ -43,8 +49,16 @@ public class Status {
         }
     }
 
+    /**
+     * Creates an empty status for JPA.
+     */
     public Status() {}
 
+    /**
+     * Creates a status with the provided type.
+     *
+     * @param status status type to assign
+     */
     public Status(StatusType status) {
         this.status = status;
     }

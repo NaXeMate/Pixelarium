@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents a line item within an order.
+ */
 @Entity
 @Table(name = "order_items")
 public class OrderItem {
@@ -26,8 +29,19 @@ public class OrderItem {
     @Column(nullable = false, name = "unit_price")
     private BigDecimal unitPrice;
 
+    /**
+     * Creates an empty order item for JPA.
+     */
     public OrderItem() {}
 
+    /**
+     * Creates an order item with the provided details.
+     *
+     * @param orderId parent order
+     * @param productId ordered product
+     * @param quantity quantity ordered
+     * @param unitPrice unit price applied to the order line
+     */
     public OrderItem(Order orderId, Product productId, int quantity, BigDecimal unitPrice) {
         this.orderId = orderId;
         this.productId = productId;
@@ -35,6 +49,15 @@ public class OrderItem {
         this.unitPrice = unitPrice;
     }
     
+    /**
+     * Creates an order item with the provided id and details.
+     *
+     * @param id order item identifier
+     * @param orderId parent order
+     * @param productId ordered product
+     * @param quantity quantity ordered
+     * @param unitPrice unit price applied to the order line
+     */
     public OrderItem(Long id, Order orderId, Product productId, int quantity, BigDecimal unitPrice) {
         this.id = id;
         this.orderId = orderId;

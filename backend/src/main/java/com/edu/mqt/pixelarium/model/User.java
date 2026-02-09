@@ -8,6 +8,9 @@ import com.edu.mqt.pixelarium.model.vo.Email;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents a registered user and their profile data.
+ */
 @Entity
 @Table(name = "users")
 public class User {
@@ -39,8 +42,22 @@ public class User {
     @Column(nullable = false)
     private LocalDate registerTime;
 
+    /**
+     * Creates an empty user for JPA.
+     */
     public User() {}
 
+    /**
+     * Creates a user with the provided attributes and sets the register time to now.
+     *
+     * @param id user identifier
+     * @param userName unique user name
+     * @param password hashed or raw password value
+     * @param realName user's given name
+     * @param surname user's surname
+     * @param email validated email value
+     * @param registerTime ignored input date; the register time is set to now
+     */
     public User(Long id, String userName, String password, String realName, String surname, Email email,
             LocalDate registerTime) {
         this.id = id;

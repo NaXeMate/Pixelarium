@@ -4,12 +4,22 @@ import java.util.regex.Pattern;
 
 import jakarta.persistence.Embeddable;
 
+/**
+ * Represents a validated email address value object.
+ */
 @Embeddable
 public record Email(String value) {
     private static final Pattern EMAIL_PATTERN =
         Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", 
                        Pattern.CASE_INSENSITIVE);
     
+    /**
+     * Creates an email value after validation.
+     *
+     * @throws IllegalArgumentException if {@code value} is null or blank
+     * @throws IllegalArgumentException if {@code value} does not match the expected email format
+     * @throws IllegalArgumentException if {@code value} exceeds 254 characters
+     */
     public Email {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("Email can't be null or be empty.");

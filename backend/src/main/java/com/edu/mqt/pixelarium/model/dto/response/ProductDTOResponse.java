@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 import com.edu.mqt.pixelarium.model.enumerated.Category;
 
+/**
+ * Represents a product in response payloads.
+ */
 public record ProductDTOResponse(
     Long id,
     String name,

@@ -1,5 +1,8 @@
 package com.edu.mqt.pixelarium.model.enumerated;
 
+/**
+ * Enumerates product categories and their display metadata.
+ */
 public enum Category {
     APPLE("APPL", "Apple"),
     NINTENDO_SWITCH("NSW", "Nintendo Switch"),

@@ -12,9 +12,18 @@ import com.edu.mqt.pixelarium.model.dto.response.OrderItemDTOResponse;
 import com.edu.mqt.pixelarium.model.dto.response.ProductDTOResponse;
 import com.edu.mqt.pixelarium.model.dto.response.UserDTOResponse;
 
+/**
+ * Maps domain entities to response DTOs.
+ */
 public class EntityToDtoMapper {
 
     // Order --> OrderDTOResponse
+    /**
+     * Creates a DTO representation of the given order.
+     *
+     * @param order source order entity
+     * @return mapped order DTO
+     */
     public static OrderDTOResponse toOrderDTO(Order order) {
         return new OrderDTOResponse(
             order.getId(),
@@ -27,6 +36,12 @@ public class EntityToDtoMapper {
     }
 
     // OrderItem --> OrderItemDTOResponse
+    /**
+     * Creates a DTO representation of the given order item.
+     *
+     * @param item source order item entity
+     * @return mapped order item DTO
+     */
     public static OrderItemDTOResponse toOrderItemDTO(OrderItem item) {
         return new OrderItemDTOResponse(
             item.getId(),
@@ -37,6 +52,12 @@ public class EntityToDtoMapper {
     }
 
     // User --> UserDTOResponse
+    /**
+     * Creates a DTO representation of the given user.
+     *
+     * @param user source user entity
+     * @return mapped user DTO
+     */
     public static UserDTOResponse toUserDTO(User user) {
         return new UserDTOResponse(
             user.getId(),
@@ -47,6 +68,12 @@ public class EntityToDtoMapper {
     }
 
     // Product --> ProductDTOResponse
+    /**
+     * Creates a DTO representation of the given product.
+     *
+     * @param product source product entity
+     * @return mapped product DTO
+     */
     public static ProductDTOResponse toProductDTO(Product product) {
         return new ProductDTOResponse(
             product.getId(),
@@ -60,6 +87,12 @@ public class EntityToDtoMapper {
         );
     }
 
+    /**
+     * Creates a list of DTOs from a list of order items.
+     *
+     * @param items source order items
+     * @return mapped list of order item DTOs
+     */
     public static List<OrderItemDTOResponse> toOrderItemDTOList(List<OrderItem> items) {
         return items.stream()
             .map(EntityToDtoMapper::toOrderItemDTO)

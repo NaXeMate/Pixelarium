@@ -8,6 +8,9 @@ import com.edu.mqt.pixelarium.model.enumerated.Category;
 
 import jakarta.persistence.*;
 
+/**
+ * Represents a catalog product and its pricing details.
+ */
 @Entity
 @Table(name = "product")
 public class Product {
@@ -42,8 +45,23 @@ public class Product {
     @Column(nullable = false)
     private Category category;
 
+    /**
+     * Creates an empty product for JPA.
+     */
     public Product() {}
 
+    /**
+     * Creates a product with the provided attributes.
+     *
+     * @param id product identifier
+     * @param name product name
+     * @param description product description
+     * @param price regular price
+     * @param salePrice optional sale price
+     * @param imagePath image path or URL
+     * @param stock available stock quantity
+     * @param category product category
+     */
     public Product(Long id, String name, String description, BigDecimal price, BigDecimal salePrice, String imagePath,
             Integer stock, Category category) {
         this.id = id;
