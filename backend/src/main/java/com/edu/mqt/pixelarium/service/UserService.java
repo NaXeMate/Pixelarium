@@ -93,9 +93,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUserByEmail(Email email) {
-        return userRepo.findByEmail(email);
-    }
+    public User getUserByEmail(String emailValue) {
+    return userRepo.findByEmail(emailValue)
+            .orElseThrow();
+}
+
 
     @Transactional(readOnly = true)
     public boolean existsByEmail(String email) {

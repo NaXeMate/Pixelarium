@@ -1,6 +1,7 @@
 package com.edu.mqt.pixelarium.web;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.mqt.pixelarium.model.Product;
@@ -69,8 +70,10 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
     
-    @GetMapping("/price-range/{min}-{max}")
-    public ResponseEntity<List<Product>> getProductsByPriceRange(@PathVariable BigDecimal min, BigDecimal max) {
+    @GetMapping("/price-range")
+    public ResponseEntity<List<Product>> getProductsByPriceRange(
+            @RequestParam BigDecimal min,
+            @RequestParam BigDecimal max) {
         List<Product> products = productService.getByPriceBetween(min, max);
         return ResponseEntity.ok(products);
     }

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.mqt.pixelarium.model.User;
 import com.edu.mqt.pixelarium.model.dto.request.CreateUserDTORequest;
-import com.edu.mqt.pixelarium.model.vo.Email;
 import com.edu.mqt.pixelarium.service.UserService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,7 +63,8 @@ public class UserController {
 
     @GetMapping("/email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        User user = userService.getUserByEmail(new Email(email));
+        User user = userService.getUserByEmail(email);
         return ResponseEntity.ok(user);
-    }
+}
+
 }
