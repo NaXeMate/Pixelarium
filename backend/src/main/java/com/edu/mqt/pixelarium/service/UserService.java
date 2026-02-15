@@ -2,7 +2,8 @@ package com.edu.mqt.pixelarium.service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+
+import com.edu.mqt.pixelarium.exception.ResourceNotFoundException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,13 +51,8 @@ public class UserService {
      */
     @Transactional(readOnly = true)
     public User getUserById(Long id) {
-        Optional<User> op = userRepo.findById(id);
-
-        if (op.isPresent()) {
-            return op.get();
-        }
-
-        return null;
+        return userRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
     /**
@@ -66,13 +62,10 @@ public class UserService {
      * @return the saved user, or {@code null} if the user does not exist
      */
     public User updateUser(User user) {
-        if (userRepo.existsById(user.getId())) {
-            System.out.println("User updated in the database.");
-            return userRepo.save(user);
-        } else {
-            System.out.println("An error has occurred and the database has not been updated.");
-            return null;
+        if (!userRepo.existsById(user.getId())) {
+            throw new ResourceNotFoundException("User not found with id: " + user.getId());
         }
+        return userRepo.save(user);
     }
 
     /**
@@ -82,9 +75,10 @@ public class UserService {
      * @throws java.util.NoSuchElementException if the user does not exist
      */
     public void deleteUser(Long id) {
-        userRepo.findById(id).orElseThrow();
+        if (!userRepo.existsById(id)) {
+            throw new ResourceNotFoundException("User not found with id: " + id);
+        }
         userRepo.deleteById(id);
-        System.out.println("User successfully deleted from the database.");
     }
 
     // ========= CUSTOM METHODS =========
@@ -99,26 +93,26 @@ public class UserService {
      */
     public User createUser(CreateUserDTORequest userDTO) {
         String email = userDTO.email();
-    if (userRepo.existsByEmail(email)) {
-        throw new IllegalArgumentException("Email already exists: " + email);
+        if (userRepo.existsByEmail(email)) {
+            throw new IllegalArgumentException("Email already exists: " + email);
+        }
+
+        String userName = userDTO.userName();
+        if (userRepo.existsByUserName(userName)) {
+            throw new IllegalArgumentException("Username already exists: " + userName);
+        }
+
+        User newUser = new User();
+
+        newUser.setUserName(userName);
+        newUser.setPassword(encodePassword(userDTO.password())); // Codificar password
+        newUser.setRealName(userDTO.firstName());
+        newUser.setSurname(userDTO.lastName());
+        newUser.setEmail(new Email(userDTO.email()));
+        newUser.setRegisterTime(LocalDate.now());
+
+        return userRepo.save(newUser);
     }
-    
-    String userName = userDTO.userName();
-    if (userRepo.existsByUserName(userName)) {
-        throw new IllegalArgumentException("Username already exists: " + userName);
-    }
-    
-    User newUser = new User();
-    
-    newUser.setUserName(userName);
-    newUser.setPassword(encodePassword(userDTO.password())); // Codificar password
-    newUser.setRealName(userDTO.firstName());
-    newUser.setSurname(userDTO.lastName());
-    newUser.setEmail(new Email(userDTO.email()));
-    newUser.setRegisterTime(LocalDate.now());
-    
-    return userRepo.save(newUser);
-}
 
     /**
      * Encodes the raw password.
@@ -152,10 +146,9 @@ public class UserService {
      */
     @Transactional(readOnly = true)
     public User getUserByEmail(String emailValue) {
-    return userRepo.findByEmail(emailValue)
-            .orElseThrow();
-}
-
+        return userRepo.findByEmail(emailValue)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + emailValue));
+    }
 
     /**
      * Checks whether a user exists with the given email.
@@ -216,7 +209,7 @@ public class UserService {
      * Returns users registered between the given dates.
      *
      * @param initialDate start date (inclusive)
-     * @param finalDate end date (inclusive)
+     * @param finalDate   end date (inclusive)
      * @return users registered within the given date range
      */
     @Transactional(readOnly = true)

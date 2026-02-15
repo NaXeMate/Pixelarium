@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
+import com.edu.mqt.pixelarium.exception.ResourceNotFoundException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +33,8 @@ public class OrderService {
     /**
      * Creates a service backed by the given dependencies.
      *
-     * @param orderRepo repository used to persist orders
-     * @param userService service used to resolve users
+     * @param orderRepo      repository used to persist orders
+     * @param userService    service used to resolve users
      * @param productService service used to resolve products
      */
     public OrderService(OrderRepository orderRepo, UserService userService, ProductService productService) {
@@ -43,7 +44,7 @@ public class OrderService {
     }
 
     // ========= CRRUD =========
-    
+
     /**
      * Returns all orders.
      *
@@ -62,13 +63,8 @@ public class OrderService {
      */
     @Transactional(readOnly = true)
     public Order getOrderById(Long id) {
-        Optional<Order> op = orderRepo.findById(id);
-
-        if (op.isPresent()) {
-            return op.get();
-        }
-
-        return null;
+        return orderRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
     }
 
     /**
@@ -78,13 +74,10 @@ public class OrderService {
      * @return the saved order, or {@code null} if the order does not exist
      */
     public Order updateOrder(Order order) {
-        if (orderRepo.existsById(order.getId())) {
-            System.out.println("Order updated in the database.");
-            return orderRepo.save(order);
-        } else {
-            System.out.println("An error has occurred and the database has not been updated.");
-            return null;
+        if (!orderRepo.existsById(order.getId())) {
+            throw new ResourceNotFoundException("Order not found with id: " + order.getId());
         }
+        return orderRepo.save(order);
     }
 
     /**
@@ -94,9 +87,10 @@ public class OrderService {
      * @throws java.util.NoSuchElementException if the order does not exist
      */
     public void deleteOrder(Long id) {
-        orderRepo.findById(id).orElseThrow();
+        if (!orderRepo.existsById(id)) {
+            throw new ResourceNotFoundException("Order not found with id: " + id);
+        }
         orderRepo.deleteById(id);
-        System.out.println("Order successfully deleted from the database.");
     }
 
     // ========= CUSTOM METHODS =========
@@ -107,24 +101,24 @@ public class OrderService {
      * @param draftOrder request payload with user and item data
      * @return the created order
      */
-    public Order createOrder (CreateOrderDTORequest draftOrder) {
+    public Order createOrder(CreateOrderDTORequest draftOrder) {
         Long orderUserId = draftOrder.userId();
         List<OrderItem> items = new ArrayList<>();
         BigDecimal totalPrice = BigDecimal.ZERO;
         Order newOrder = new Order();
-        
+
         newOrder.setUser(userService.getUserById(orderUserId));
         newOrder.setStatus(new Status(StatusType.DRAFT));
-        
+
         for (OrderItemDTORequest itemDTO : draftOrder.items()) {
-            
+
             Product product = productService.getProductById(itemDTO.productId());
 
             OrderItem orderItem = buildOrderItem(newOrder, itemDTO, product);
 
             items.add(orderItem);
         }
-        
+
         newOrder.setOrderItems(items);
 
         for (OrderItem item : items) {
@@ -143,7 +137,7 @@ public class OrderService {
     /**
      * Builds an order item using the product's sale price when available.
      *
-     * @param order parent order
+     * @param order   parent order
      * @param itemDTO item request data
      * @param product resolved product
      * @return the built order item
@@ -153,7 +147,7 @@ public class OrderService {
             OrderItem orderItem = new OrderItem(order, product, itemDTO.quantity(), product.getPrice());
             return orderItem;
         }
-        
+
         OrderItem orderItem = new OrderItem(order, product, itemDTO.quantity(), product.getSalePrice());
         return orderItem;
     }
@@ -161,28 +155,31 @@ public class OrderService {
     /**
      * Changes an order status if the transition is allowed.
      *
-     * @param orderId order identifier
+     * @param orderId   order identifier
      * @param newStatus new status to set
      * @return the updated order, or {@code null} if the transition is not allowed
      */
     public Order changeOrderStatus(Long orderId, Status newStatus) {
         Order changingOrder = getOrderById(orderId);
 
-        if (changingOrder.getStatus().getType() == StatusType.PENDING && (newStatus.getType() == StatusType.DRAFT 
-        || newStatus.getType() == StatusType.DELIVERED)) {
-            System.out.println("The new order status is not compatible with the current one. No changes have been made.");
-            return null;
-        }
-        
-        if (changingOrder.getStatus().getType() == StatusType.SENT && (newStatus.getType() == StatusType.PENDING
-         || newStatus.getType() == StatusType.DRAFT)) {
-            System.out.println("The new order status is not compatible with the current one. No changes have been made.");
+        if (changingOrder.getStatus().getType() == StatusType.PENDING && (newStatus.getType() == StatusType.DRAFT
+                || newStatus.getType() == StatusType.DELIVERED)) {
+            System.out
+                    .println("The new order status is not compatible with the current one. No changes have been made.");
             return null;
         }
 
-        if (changingOrder.getStatus().getType() == StatusType.DELIVERED && (newStatus.getType() == StatusType.SENT 
-        || newStatus.getType() == StatusType.DRAFT)) {
-            System.out.println("The new order status is not compatible with the current one. No changes have been made.");
+        if (changingOrder.getStatus().getType() == StatusType.SENT && (newStatus.getType() == StatusType.PENDING
+                || newStatus.getType() == StatusType.DRAFT)) {
+            System.out
+                    .println("The new order status is not compatible with the current one. No changes have been made.");
+            return null;
+        }
+
+        if (changingOrder.getStatus().getType() == StatusType.DELIVERED && (newStatus.getType() == StatusType.SENT
+                || newStatus.getType() == StatusType.DRAFT)) {
+            System.out
+                    .println("The new order status is not compatible with the current one. No changes have been made.");
             return null;
         }
 

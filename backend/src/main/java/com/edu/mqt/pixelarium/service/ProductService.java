@@ -2,7 +2,8 @@ package com.edu.mqt.pixelarium.service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
+
+import com.edu.mqt.pixelarium.exception.ResourceNotFoundException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,13 +51,8 @@ public class ProductService {
      */
     @Transactional(readOnly = true)
     public Product getProductById(Long id) {
-        Optional<Product> op = productRepo.findById(id);
-
-        if (op.isPresent()) {
-            return op.get();
-        }
-
-        return null;
+        return productRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
     }
 
     /**
@@ -66,13 +62,10 @@ public class ProductService {
      * @return the saved product, or {@code null} if the product does not exist
      */
     public Product updateProduct(Product product) {
-        if (productRepo.existsById(product.getId())) {
-            System.out.println("Product updated in the database.");
-            return productRepo.save(product);
-        } else {
-            System.out.println("An error has occurred and the database has not been updated.");
-            return null;
+        if (!productRepo.existsById(product.getId())) {
+            throw new ResourceNotFoundException("Product not found with id: " + product.getId());
         }
+        return productRepo.save(product);
     }
 
     /**
@@ -82,9 +75,10 @@ public class ProductService {
      * @throws java.util.NoSuchElementException if the product does not exist
      */
     public void deleteProduct(Long id) {
-        productRepo.findById(id).orElseThrow();
+        if (!productRepo.existsById(id)) {
+            throw new ResourceNotFoundException("Product not found with id: " + id);
+        }
         productRepo.deleteById(id);
-        System.out.println("Product successfully deleted from the database.");
     }
 
     // ========= CUSTOM METHODS =========
@@ -100,40 +94,40 @@ public class ProductService {
      * @throws IllegalArgumentException if the sale price is invalid
      */
     public Product createProduct(CreateProductDTORequest productDTO) {
-    String name = productDTO.name();
-    if (productRepo.existsByName(name)) {
-        throw new IllegalArgumentException("Product already exists with name: " + name);
-    }
-    
-    if (productDTO.price().compareTo(BigDecimal.ZERO) < 0) {
-        throw new IllegalArgumentException("Price cannot be negative!");
-    }
-    
-    if (productDTO.stock() < 0) {
-        throw new IllegalArgumentException("Stock cannot be negative!");
-    }
-    
-    if (productDTO.salePrice() != null) {
-        if (productDTO.salePrice().compareTo(productDTO.price()) >= 0) {
-            throw new IllegalArgumentException("Sale price must be lower than regular price!");
+        String name = productDTO.name();
+        if (productRepo.existsByName(name)) {
+            throw new IllegalArgumentException("Product already exists with name: " + name);
         }
-        if (productDTO.salePrice().compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Sale price cannot be negative!");
+
+        if (productDTO.price().compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Price cannot be negative!");
         }
+
+        if (productDTO.stock() < 0) {
+            throw new IllegalArgumentException("Stock cannot be negative!");
+        }
+
+        if (productDTO.salePrice() != null) {
+            if (productDTO.salePrice().compareTo(productDTO.price()) >= 0) {
+                throw new IllegalArgumentException("Sale price must be lower than regular price!");
+            }
+            if (productDTO.salePrice().compareTo(BigDecimal.ZERO) < 0) {
+                throw new IllegalArgumentException("Sale price cannot be negative!");
+            }
+        }
+
+        Product newProduct = new Product();
+
+        newProduct.setName(productDTO.name());
+        newProduct.setDescription(productDTO.description());
+        newProduct.setPrice(productDTO.price());
+        newProduct.setSalePrice(productDTO.salePrice());
+        newProduct.setImagePath(productDTO.imagePath());
+        newProduct.setStock(productDTO.stock());
+        newProduct.setCategory(productDTO.category());
+
+        return productRepo.save(newProduct);
     }
-    
-    Product newProduct = new Product();
-    
-    newProduct.setName(productDTO.name());
-    newProduct.setDescription(productDTO.description());
-    newProduct.setPrice(productDTO.price());
-    newProduct.setSalePrice(productDTO.salePrice());
-    newProduct.setImagePath(productDTO.imagePath());
-    newProduct.setStock(productDTO.stock());
-    newProduct.setCategory(productDTO.category());
-    
-    return productRepo.save(newProduct);
-}
 
     /**
      * Returns products whose names contain the given fragment, ignoring case.
@@ -205,7 +199,7 @@ public class ProductService {
      * Returns products in a category with the exact price.
      *
      * @param category category to match
-     * @param price price to match
+     * @param price    price to match
      * @return matching products
      */
     @Transactional(readOnly = true)
@@ -217,8 +211,8 @@ public class ProductService {
      * Returns products in a category within the given price range.
      *
      * @param category category to match
-     * @param min minimum price (inclusive)
-     * @param max maximum price (inclusive)
+     * @param min      minimum price (inclusive)
+     * @param max      maximum price (inclusive)
      * @return matching products
      */
     @Transactional(readOnly = true)
