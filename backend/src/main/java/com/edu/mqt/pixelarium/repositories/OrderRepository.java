@@ -4,10 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.edu.mqt.pixelarium.model.Order;
-
 import java.util.List;
 import java.time.LocalDateTime;
+
+import com.edu.mqt.pixelarium.model.entities.Order;
 import com.edu.mqt.pixelarium.model.vo.Status;
 
 /**

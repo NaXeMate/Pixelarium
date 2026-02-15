@@ -3,11 +3,12 @@ package com.edu.mqt.pixelarium.web;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.edu.mqt.pixelarium.model.Order;
 import com.edu.mqt.pixelarium.model.dto.request.CreateOrderDTORequest;
+import com.edu.mqt.pixelarium.model.entities.Order;
 import com.edu.mqt.pixelarium.model.vo.Status;
 import com.edu.mqt.pixelarium.service.OrderService;
 
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class OrderController {
         List<Order> orders = orderService.getOrders();
         return ResponseEntity.ok(orders);
     }
-    
+
     /**
      * Returns a single order by its identifier.
      *
@@ -61,7 +62,7 @@ public class OrderController {
         Order order = orderService.getOrderById(id);
         return ResponseEntity.ok(order);
     }
-    
+
     /**
      * Creates a new order from the provided request payload.
      *
@@ -69,15 +70,15 @@ public class OrderController {
      * @return the created order
      */
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody CreateOrderDTORequest orderDTO) {
+    public ResponseEntity<Order> createOrder(@Valid @RequestBody CreateOrderDTORequest orderDTO) {
         Order createdOrder = orderService.createOrder(orderDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
-    
+
     /**
      * Updates an existing order using the provided details.
      *
-     * @param id order identifier to update
+     * @param id           order identifier to update
      * @param orderDetails updated order data
      * @return the updated order
      */
@@ -105,7 +106,7 @@ public class OrderController {
     /**
      * Changes the status of an order to the requested value.
      *
-     * @param id order identifier
+     * @param id         order identifier
      * @param statusType new status type to apply
      * @return the updated order with the new status
      */
@@ -141,7 +142,7 @@ public class OrderController {
         List<Order> userOrders = orderService.findByUserId(id);
         return ResponseEntity.ok(userOrders);
     }
-    
+
     /**
      * Returns orders that match the provided status.
      *
@@ -155,13 +156,13 @@ public class OrderController {
         return ResponseEntity.ok(statusOrders);
     }
 
-
     /**
      * Returns orders with a specific order date.
      *
      * @param date order date-time in ISO-8601 format
      * @return the list of orders matching the given date-time
-     * @throws java.time.format.DateTimeParseException if {@code date} is not a valid date-time
+     * @throws java.time.format.DateTimeParseException if {@code date} is not a
+     *                                                 valid date-time
      */
     @GetMapping("/date/{date}")
     public ResponseEntity<List<Order>> getOrdersByDate(@PathVariable String date) {
@@ -170,7 +171,6 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
-    
     /**
      * Returns orders with the specified total price.
      *

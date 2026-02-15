@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.edu.mqt.pixelarium.model.User;
 import com.edu.mqt.pixelarium.model.dto.request.CreateUserDTORequest;
+import com.edu.mqt.pixelarium.model.entities.User;
 import com.edu.mqt.pixelarium.model.vo.Email;
 import com.edu.mqt.pixelarium.repositories.UserRepository;
 

@@ -3,14 +3,14 @@ package com.edu.mqt.pixelarium.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.edu.mqt.pixelarium.model.Order;
-import com.edu.mqt.pixelarium.model.OrderItem;
-import com.edu.mqt.pixelarium.model.Product;
-import com.edu.mqt.pixelarium.model.User;
 import com.edu.mqt.pixelarium.model.dto.response.OrderDTOResponse;
 import com.edu.mqt.pixelarium.model.dto.response.OrderItemDTOResponse;
 import com.edu.mqt.pixelarium.model.dto.response.ProductDTOResponse;
 import com.edu.mqt.pixelarium.model.dto.response.UserDTOResponse;
+import com.edu.mqt.pixelarium.model.entities.Order;
+import com.edu.mqt.pixelarium.model.entities.OrderItem;
+import com.edu.mqt.pixelarium.model.entities.Product;
+import com.edu.mqt.pixelarium.model.entities.User;
 
 /**
  * Maps domain entities to response DTOs.

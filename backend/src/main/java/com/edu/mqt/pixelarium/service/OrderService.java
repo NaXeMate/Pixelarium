@@ -9,11 +9,11 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.edu.mqt.pixelarium.model.Order;
-import com.edu.mqt.pixelarium.model.OrderItem;
-import com.edu.mqt.pixelarium.model.Product;
 import com.edu.mqt.pixelarium.model.dto.request.CreateOrderDTORequest;
 import com.edu.mqt.pixelarium.model.dto.request.OrderItemDTORequest;
+import com.edu.mqt.pixelarium.model.entities.Order;
+import com.edu.mqt.pixelarium.model.entities.OrderItem;
+import com.edu.mqt.pixelarium.model.entities.Product;
 import com.edu.mqt.pixelarium.model.vo.Status;
 import com.edu.mqt.pixelarium.model.vo.Status.StatusType;
 import com.edu.mqt.pixelarium.repositories.OrderRepository;

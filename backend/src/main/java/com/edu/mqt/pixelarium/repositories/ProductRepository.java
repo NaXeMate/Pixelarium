@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.edu.mqt.pixelarium.model.Product;
+import com.edu.mqt.pixelarium.model.entities.Product;
 import com.edu.mqt.pixelarium.model.enumerated.Category;
 
 import java.math.BigDecimal;

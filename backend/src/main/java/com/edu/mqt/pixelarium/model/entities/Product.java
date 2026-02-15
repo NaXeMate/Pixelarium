@@ -1,4 +1,4 @@
-package com.edu.mqt.pixelarium.model;
+package com.edu.mqt.pixelarium.model.entities;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

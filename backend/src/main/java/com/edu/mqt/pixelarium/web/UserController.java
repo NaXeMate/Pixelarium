@@ -7,9 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.edu.mqt.pixelarium.model.User;
 import com.edu.mqt.pixelarium.model.dto.request.CreateUserDTORequest;
+import com.edu.mqt.pixelarium.model.entities.User;
 import com.edu.mqt.pixelarium.service.UserService;
+
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,15 +68,15 @@ public class UserController {
      * @return the created user
      */
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody CreateUserDTORequest userDTO) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserDTORequest userDTO) {
         User createdUser = userService.createUser(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
-    
+
     /**
      * Updates an existing user using the provided details.
      *
-     * @param id user identifier to update
+     * @param id          user identifier to update
      * @param userDetails updated user data
      * @return the updated user
      */
@@ -88,6 +90,18 @@ public class UserController {
     }
 
     /**
+     * Returns a user by email address.
+     *
+     * @param email user email address
+     * @return the matching user
+     */
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        User user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(user);
+    }
+
+    /**
      * Deletes a user by its identifier.
      *
      * @param id user identifier
@@ -98,17 +112,4 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
-
-    /**
-     * Returns a user by email address.
-     *
-     * @param email user email address
-     * @return the matching user
-     */
-    @GetMapping("/email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        User user = userService.getUserByEmail(email);
-        return ResponseEntity.ok(user);
-}
-
 }

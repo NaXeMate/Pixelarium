@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.edu.mqt.pixelarium.model.Product;
 import com.edu.mqt.pixelarium.model.dto.request.CreateProductDTORequest;
+import com.edu.mqt.pixelarium.model.entities.Product;
 import com.edu.mqt.pixelarium.model.enumerated.Category;
 import com.edu.mqt.pixelarium.repositories.ProductRepository;
 

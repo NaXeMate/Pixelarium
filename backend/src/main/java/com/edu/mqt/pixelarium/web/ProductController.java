@@ -4,10 +4,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.edu.mqt.pixelarium.model.Product;
 import com.edu.mqt.pixelarium.model.dto.request.CreateProductDTORequest;
+import com.edu.mqt.pixelarium.model.entities.Product;
 import com.edu.mqt.pixelarium.model.enumerated.Category;
 import com.edu.mqt.pixelarium.service.ProductService;
+
+import jakarta.validation.Valid;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -69,7 +71,7 @@ public class ProductController {
      * @return the created product
      */
     @PostMapping
-    public ResponseEntity<Product> createProduct (@RequestBody CreateProductDTORequest productDTO) {
+    public ResponseEntity<Product> createProduct(@Valid @RequestBody CreateProductDTORequest productDTO) {
         Product createdProduct = productService.createProduct(productDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
@@ -77,7 +79,7 @@ public class ProductController {
     /**
      * Updates an existing product using the provided details.
      *
-     * @param id product identifier to update
+     * @param id             product identifier to update
      * @param productDetails updated product data
      * @return the updated product
      */
@@ -89,7 +91,7 @@ public class ProductController {
         Product updatedProduct = productService.updateProduct(productDetails);
         return ResponseEntity.ok(updatedProduct);
     }
-    
+
     /**
      * Deletes a product by its identifier.
      *
@@ -101,7 +103,7 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
-    
+
     /**
      * Returns all products that match the given category.
      *
@@ -113,7 +115,7 @@ public class ProductController {
         List<Product> products = productService.getByCategory(category);
         return ResponseEntity.ok(products);
     }
-    
+
     /**
      * Returns products whose price falls within the given range.
      *
