@@ -1,14 +1,9 @@
 import type { UserResponse, CreateUser } from "./userTypes";
 import type { Category, Status } from "./commonTypes";
 import type { ProductResponse, CreateProduct } from "./productTypes";
-import type {
-  OrderResponse,
-  CreateOrder,
-  OrderItem,
-  CartItem,
-} from "./orderTypes";
+import type { OrderResponse, CreateOrder, OrderItem } from "./orderTypes";
 
 export type { UserResponse, CreateUser };
 export type { Category, Status };
 export type { ProductResponse, CreateProduct };
-export type { OrderResponse, CreateOrder, OrderItem, CartItem };
+export type { OrderResponse, CreateOrder, OrderItem };

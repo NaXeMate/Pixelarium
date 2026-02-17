@@ -1,5 +1,4 @@
 import type { Status } from "./commonTypes";
-import type { ProductResponse } from "./productTypes";
 
 export type OrderResponse = {
   id: number;
@@ -19,9 +18,4 @@ export type OrderItem = {
   productId: number;
   quantity: number;
   price: number;
-};
-
-export type CartItem = {
-  product: ProductResponse;
-  quantity: number;
 };
