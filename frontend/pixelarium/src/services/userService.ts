@@ -17,6 +17,13 @@ export async function createUser(userData: CreateUser): Promise<UserResponse> {
   return apiRequest<UserResponse>("POST", `/users`, userData);
 }
 
+export async function login(
+  email: string,
+  password: string,
+): Promise<UserResponse> {
+  return apiRequest<UserResponse>("POST", `/users/login`, { email, password });
+}
+
 export async function updateUser(
   id: number,
   userData: CreateUser,
