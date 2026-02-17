@@ -4,11 +4,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.edu.mqt.pixelarium.exception.ResourceNotFoundException;
+import com.edu.mqt.pixelarium.mapper.EntityToDtoMapper;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.edu.mqt.pixelarium.model.dto.request.CreateUserDTORequest;
+import com.edu.mqt.pixelarium.model.dto.response.UserDTOResponse;
 import com.edu.mqt.pixelarium.model.entities.User;
 import com.edu.mqt.pixelarium.model.vo.Email;
 import com.edu.mqt.pixelarium.repositories.UserRepository;
@@ -124,6 +126,17 @@ public class UserService {
         // TODO: Inyectar BCryptPasswordEncoder y usar
         // return passwordEncoder.encode(rawPassword);
         return rawPassword;
+    }
+
+    public UserDTOResponse login(String email, String password) {
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+
+        if (!user.getPassword().equals(password)) {
+            throw new IllegalArgumentException("Invalid password");
+        }
+
+        return EntityToDtoMapper.toUserDTO(user);
     }
 
     /**
