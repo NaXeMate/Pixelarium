@@ -1,15 +1,14 @@
-import "./App.css";
+import { RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import { router } from "./routes";
+import "./App.css";
 
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <div>
-          <h1>Pixelarium</h1>
-          <p>Welcome to Pixelarium</p>
-        </div>
+        <RouterProvider router={router} />
       </CartProvider>
     </AuthProvider>
   );
