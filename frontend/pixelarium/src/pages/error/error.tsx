@@ -1,10 +1,33 @@
+import { useRouteError } from "react-router-dom";
+import Button from "../../components/common/button/button";
 import "./error.css";
 
-export default function error() {
+export default function Error() {
+  const error = useRouteError() as {
+    status?: number;
+    statusText?: string;
+    message?: string;
+  };
+
   return (
     <div className="error-page">
-      <h1>Error</h1>
-      <p>Página de error - En construcción</p>
+      <div className="error-page__icon">
+        <i className="bi bi-exclamation-triangle"></i>
+      </div>
+      <h1 className="error-page__title">¡Algo salió mal!</h1>
+      <p className="error-page__message">
+        {error?.statusText ||
+          error?.message ||
+          "Ha ocurrido un error inesperado."}
+      </p>
+      <div className="error-page__actions">
+        <Button to="/" icon="bi-house-door">
+          Volver al Inicio
+        </Button>
+        <Button to="/products" variant="secondary" icon="bi-grid">
+          Ver Productos
+        </Button>
+      </div>
     </div>
   );
 }
