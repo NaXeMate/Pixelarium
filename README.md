@@ -15,9 +15,9 @@ Pixelarium is an e-commerce platform for selling products (books, video games, e
 ## Requirements
 
 - **Java**: 25 or higher
-- **Maven**: 3.8.1 or higher
+- **Maven**: 3.9 or higher
 - **MySQL**: 8.0 or higher (or MariaDB 10.5+)
-- **Git**: 2.52 or higher
+- **Git**: 2.40 or higher
 
 ## Installation and Setup
 
