@@ -2,24 +2,24 @@
 
 Pixelarium is an e-commerce platform for selling products (books, video games, etc.). This repository contains the **REST API** developed with **Spring Boot 4**, **MySQL**, and **Java 25**, ready to integrate with a **React** frontend.
 
-## ✨ Key Features
+## Key Features
 
-- ✅ **Complete REST API**: CRRUD for users, products, and orders
-- ✅ **CORS Enabled**: Configured for React at `localhost:3000`
-- ✅ **Response DTOs**: Does not expose sensitive data
-- ✅ **Global Error Handling**: Consistent JSON responses
-- ✅ **Validations**: Bean Validation on DTOs
-- ✅ **Complete JavaDoc**: All methods documented
-- ✅ **Business Logic**: State transitions, total calculations, validations
+- **Complete REST API**: CRRUD for users, products, and orders
+- **CORS Enabled**: Configured for React at `localhost:3000`
+- **Response DTOs**: Does not expose sensitive data
+- **Global Error Handling**: Consistent JSON responses
+- **Validations**: Bean Validation on DTOs
+- **Complete JavaDoc**: All methods documented
+- **Business Logic**: State transitions, total calculations, validations
 
-## 📋 Requirements
+## Requirements
 
 - **Java**: 25 or higher
 - **Maven**: 3.8.1 or higher
 - **MySQL**: 8.0 or higher (or MariaDB 10.5+)
 - **Git**: 2.52 or higher
 
-## 🛠️ Installation and Setup
+## Installation and Setup
 
 ### 1. Clone the repository
 
@@ -113,9 +113,9 @@ curl -X POST http://localhost:8080/api/users \
 {
   "id": 1,
   "userName": "mateo.garcia",
-  "realName": "Mateo",
-  "surname": "García",
-  "email": "mateo@example.com",
+  "email": {
+    "value": "mateo@example.com"
+  },
   "registerTime": "2026-02-15"
 }
 ```
@@ -168,16 +168,31 @@ curl -X POST http://localhost:8080/api/orders \
   }'
 ```
 
-**Response:**
+**Response (OrderDTOResponse):**
 
 ```json
 {
   "id": 5,
-  "user": {...},
-  "status": {"type": "DRAFT"},
+  "userId": 1,
   "orderDate": "2026-02-15T16:45:00",
   "totalPrice": 129.97,
-  "orderItems": [...]
+  "status": {
+    "type": "DRAFT"
+  },
+  "orderItems": [
+    {
+      "id": 10,
+      "productId": 1,
+      "quantity": 2,
+      "unitPrice": 49.99
+    },
+    {
+      "id": 11,
+      "productId": 3,
+      "quantity": 1,
+      "unitPrice": 29.99
+    }
+  ]
 }
 ```
 
@@ -225,28 +240,34 @@ src/main/java/com/edu/mqt/pixelarium/
 │   ├── ResourceNotFoundException.java
 │   └── ErrorResponse.java
 ├── model/                  # JPA Entities
-│   ├── User.java
-│   ├── Product.java
-│   ├── Order.java
-│   ├── OrderItem.java
+│   ├── entities/           # Domain entities
+│   │   ├── User.java
+│   │   ├── Product.java
+│   │   ├── Order.java
+│   │   └── OrderItem.java
 │   ├── dto/
 │   │   ├── request/        # Request DTOs
 │   │   │   ├── CreateUserDTORequest.java
 │   │   │   ├── CreateProductDTORequest.java
-│   │   │   └── CreateOrderDTORequest.java
+│   │   │   ├── CreateOrderDTORequest.java
+│   │   │   └── OrderItemDTORequest.java
 │   │   └── response/       # Response DTOs
 │   │       ├── UserDTOResponse.java
 │   │       ├── ProductDTOResponse.java
-│   │       └── OrderDTOResponse.java
+│   │       ├── OrderDTOResponse.java
+│   │       └── OrderItemDTOResponse.java
 │   ├── vo/                 # Value Objects
 │   │   ├── Email.java
 │   │   └── Status.java
 │   └── enumerated/         # Enums
 │       └── Category.java
+├── mapper/                 # Entity to DTO mappers
+│   └── EntityToDtoMapper.java
 ├── repositories/           # JPA Repositories
 │   ├── UserRepository.java
 │   ├── ProductRepository.java
-│   └── OrderRepository.java
+│   ├── OrderRepository.java
+│   └── OrderItemRepository.java
 ├── service/                # Business Logic
 │   ├── UserService.java
 │   ├── ProductService.java
@@ -276,7 +297,7 @@ curl -X POST http://localhost:8080/api/products \
     "salePrice": 49.99,
     "imagePath": "/images/zelda.jpg",
     "stock": 50,
-    "category": "VIDEOGAMES"
+    "category": "NINTENDO_SWITCH"
   }'
 ```
 
