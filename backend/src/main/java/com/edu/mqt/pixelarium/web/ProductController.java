@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.mqt.pixelarium.model.dto.request.CreateProductDTORequest;
+import com.edu.mqt.pixelarium.model.dto.response.ProductDTOResponse;
 import com.edu.mqt.pixelarium.model.entities.Product;
 import com.edu.mqt.pixelarium.model.enumerated.Category;
 import com.edu.mqt.pixelarium.service.ProductService;
@@ -102,6 +103,18 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Searches for products by name or description.
+     *
+     * @param query search query
+     * @return list of matching products
+     */
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDTOResponse>> searchProducts(
+            @RequestParam String query) {
+        return ResponseEntity.ok(productService.searchProducts(query));
     }
 
     /**

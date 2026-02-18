@@ -2,13 +2,16 @@ package com.edu.mqt.pixelarium.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.edu.mqt.pixelarium.exception.ResourceNotFoundException;
+import com.edu.mqt.pixelarium.mapper.EntityToDtoMapper;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.edu.mqt.pixelarium.model.dto.request.CreateProductDTORequest;
+import com.edu.mqt.pixelarium.model.dto.response.ProductDTOResponse;
 import com.edu.mqt.pixelarium.model.entities.Product;
 import com.edu.mqt.pixelarium.model.enumerated.Category;
 import com.edu.mqt.pixelarium.repositories.ProductRepository;
@@ -138,6 +141,20 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List<Product> getByNameContainingIgnoreCase(String namePart) {
         return productRepo.findByNameContainingIgnoreCase(namePart);
+    }
+
+    /**
+     * Searches for products by name or description, ignoring case.
+     * 
+     * @param query search query
+     * @return matching products
+     */
+    @Transactional(readOnly = true)
+    public List<ProductDTOResponse> searchProducts(String query) {
+        return productRepo.searchByNameOrDescription(query)
+                .stream()
+                .map(EntityToDtoMapper::toProductDTO)
+                .collect(Collectors.toList());
     }
 
     /**
