@@ -10,7 +10,7 @@ import "./productDetail.css";
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addToCart, items } = useCart();
 
   const [product, setProduct] = useState<ProductResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,8 +35,14 @@ export default function ProductDetail() {
     fetchProduct();
   }, [id]);
 
+  const cartItem = items.find((item) => item.product.id === product?.id);
+  const currentQtyInCart = cartItem ? cartItem.quantity : 0;
+  const isStockLimitReached = product
+    ? currentQtyInCart >= product.stock
+    : false;
+
   const handleAddToCart = () => {
-    if (product && product.stock > 0) {
+    if (product && product.stock > 0 && !isStockLimitReached) {
       addToCart(product, 1);
     }
   };
@@ -158,9 +164,13 @@ export default function ProductDetail() {
               <button
                 className="add-to-cart-btn"
                 onClick={handleAddToCart}
-                disabled={product.stock <= 0}
+                disabled={product.stock <= 0 || isStockLimitReached}
               >
-                {product.stock > 0 ? (
+                {product.stock <= 0 ? (
+                  "Agotado"
+                ) : isStockLimitReached ? (
+                  "Límite de stock alcanzado"
+                ) : (
                   <>
                     <svg
                       width="20"
@@ -178,8 +188,6 @@ export default function ProductDetail() {
                     </svg>
                     Añadir al carrito
                   </>
-                ) : (
-                  "Agotado"
                 )}
               </button>
             </div>
