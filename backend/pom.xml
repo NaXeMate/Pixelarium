@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.edu.mqt</groupId>
 	<artifactId>pixelarium</artifactId>
-	<version>1.0.0-beta</version>
+	<version>1.1.0</version>
 	<name>pixelarium</name>
 	<description>E-Commerce REST API built with Spring Boot</description>
 	<url />

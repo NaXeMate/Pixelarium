@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.mqt.pixelarium.model.dto.request.CreateUserDTORequest;
+import com.edu.mqt.pixelarium.model.dto.request.LoginDTORequest;
+import com.edu.mqt.pixelarium.model.dto.response.UserDTOResponse;
 import com.edu.mqt.pixelarium.model.entities.User;
 import com.edu.mqt.pixelarium.service.UserService;
 
@@ -90,18 +92,6 @@ public class UserController {
     }
 
     /**
-     * Returns a user by email address.
-     *
-     * @param email user email address
-     * @return the matching user
-     */
-    @GetMapping("/email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        User user = userService.getUserByEmail(email);
-        return ResponseEntity.ok(user);
-    }
-
-    /**
      * Deletes a user by its identifier.
      *
      * @param id user identifier
@@ -111,5 +101,29 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Logs in a user.
+     *
+     * @param loginDTO request payload with user credentials
+     * @return the logged in user
+     */
+    @PostMapping("/login")
+    public ResponseEntity<UserDTOResponse> login(@Valid @RequestBody LoginDTORequest loginDTO) {
+        UserDTOResponse user = userService.login(loginDTO.email(), loginDTO.password());
+        return ResponseEntity.ok(user);
+    }
+
+    /**
+     * Returns a user by email address.
+     *
+     * @param email user email address
+     * @return the matching user
+     */
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        User user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(user);
     }
 }

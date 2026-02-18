@@ -1,0 +1,49 @@
+.error-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  text-align: center;
+  background-color: #0f0f1a;
+}
+
+.error-page__icon {
+  font-size: 5rem;
+  color: #ff6b6b;
+  margin-bottom: 1.5rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.error-page__title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+}
+
+.error-page__message {
+  font-size: 1.15rem;
+  color: #a0a0b8;
+  max-width: 480px;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.error-page__actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
