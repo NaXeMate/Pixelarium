@@ -2,7 +2,7 @@ import "./products.css";
 import Header from "../../components/layout/header/header";
 import Footer from "../../components/layout/footer/footer";
 
-export default function products() {
+export default function Products() {
   return (
     <div className="products-page">
       <Header />

@@ -1,3 +1,3 @@
-import productDetail from "./productDetail";
+import ProductDetail from "./productDetail";
 
-export default productDetail;
+export default ProductDetail;
