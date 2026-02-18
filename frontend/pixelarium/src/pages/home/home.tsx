@@ -186,7 +186,7 @@ export default function Home() {
                     />
                     {product.salePrice && (
                       <span className="product-badge sale">
-                        SALE −
+                        OFERTA −
                         {discountPercent(product.price, product.salePrice)}%
                       </span>
                     )}
