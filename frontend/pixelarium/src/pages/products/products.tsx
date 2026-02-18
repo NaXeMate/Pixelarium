@@ -1,19 +1,17 @@
 import "./products.css";
 import Header from "../../components/layout/header/header";
 import Footer from "../../components/layout/footer/footer";
+import ProductCard from "../../components/layout/productCard/productCard";
 import { useCallback, useEffect, useState } from "react";
 import type { ProductResponse, Category } from "../../types";
 import {
   getAllProducts,
   getProductsByPriceRange,
 } from "../../services/productService";
-import ProductCard from "../../components/layout/productCard";
-import { Link } from "react-router-dom";
 
 export default function Products() {
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [displayProducts, setDisplayProducts] = useState<ProductResponse[]>([]);
-  // search removed as per mockup
   const [selectedCategory, setSelectedCategory] = useState<Category | "ALL">(
     "ALL",
   );
@@ -30,21 +28,20 @@ export default function Products() {
   const ITEMS_PER_PAGE = 8;
 
   const categories = [
-    { id: "ALL", label: "Todos", count: 0 }, // Count logic would need backend support or full fetch
-    { id: "NINTENDO_SWITCH", label: "Videojuegos", count: 128 }, // Mock counts
-    { id: "NINTENDO_SWITCH_2", label: "Consolas", count: 45 },
-    { id: "PC", label: "PC Gaming", count: 86 },
-    { id: "ACCESSORIES", label: "Periféricos", count: 32 },
-    { id: "APPLE", label: "Apple", count: 14 },
+    { id: "ALL", label: "Todos" },
+    { id: "NINTENDO_SWITCH", label: "Videojuegos" },
+    { id: "NINTENDO_SWITCH_2", label: "Consolas" },
+    { id: "PC", label: "PC Gaming" },
+    { id: "ACCESSORIES", label: "Periféricos" },
+    { id: "APPLE", label: "Apple" },
   ] as const;
 
+  // Fetches products from backend: all or filtered by price range
   const loadAllProducts = useCallback(async () => {
     try {
       setIsLoading(true);
       setError("");
-      // Ideally this would be a filtered fetch, but for now we fetch all and filter client-side
-      // EXCEPT for price range if specified and no other complex filters overlap unfavorably.
-      // However, to keep it simple and consistent with current backend capabilities shown:
+
       let data: ProductResponse[] = [];
 
       if (minPrice && maxPrice) {
@@ -64,35 +61,26 @@ export default function Products() {
     }
   }, [minPrice, maxPrice]);
 
+  // Load products on mount and whenever loadAllProducts changes (price range change)
   useEffect(() => {
     loadAllProducts();
   }, [loadAllProducts]);
 
-  // Client-side Filtering & Sorting Effect
+  // Client-side filtering and sorting
   useEffect(() => {
     let result = [...products];
 
-    // 1. Search removed
-    // if (searchQuery.trim()) {
-    //   const query = searchQuery.toLowerCase();
-    //   result = result.filter(
-    //     (p) =>
-    //       p.name.toLowerCase().includes(query) ||
-    //       p.description.toLowerCase().includes(query),
-    //   );
-    // }
-
-    // 2. Category
+    // Filter by category
     if (selectedCategory !== "ALL") {
       result = result.filter((p) => p.category === selectedCategory);
     }
 
-    // 3. Sale
+    // Filter by sale price
     if (onlyOnSale) {
       result = result.filter((p) => p.salePrice && p.salePrice < p.price);
     }
 
-    // 4. Sorting
+    // Sort results
     result.sort((a, b) => {
       const priceA = a.salePrice || a.price;
       const priceB = b.salePrice || b.price;
@@ -110,10 +98,18 @@ export default function Products() {
     });
 
     setDisplayProducts(result);
-    setCurrentPage(1); // Reset to page 1 on filter change
+    setCurrentPage(1); // Reset to page 1 whenever filters change
   }, [products, selectedCategory, onlyOnSale, sortOrder]);
 
-  // Pagination Logic
+  const handleClearFilters = () => {
+    setMinPrice("");
+    setMaxPrice("");
+    setSelectedCategory("ALL");
+    setOnlyOnSale(false);
+    setSortOrder("PRICE_ASC");
+  };
+
+  // Pagination
   const totalPages = Math.ceil(displayProducts.length / ITEMS_PER_PAGE);
   const paginatedProducts = displayProducts.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
@@ -127,6 +123,7 @@ export default function Products() {
       <div className="products-layout-container">
         {/* Sidebar */}
         <aside className="products-sidebar">
+          {/* Category filter */}
           <div className="sidebar-section">
             <h3 className="sidebar-title">Categorías</h3>
             <div className="category-list">
@@ -140,12 +137,12 @@ export default function Products() {
                 >
                   <span className="checkbox-mock"></span>
                   <span className="category-label">{cat.label}</span>
-                  {/* <span className="category-count">{cat.count}</span> */}
                 </div>
               ))}
             </div>
           </div>
 
+          {/* Price range filter */}
           <div className="sidebar-section">
             <h3 className="sidebar-title">Precio (€)</h3>
             <div className="price-inputs">
@@ -166,26 +163,13 @@ export default function Products() {
               <button className="apply-filter-btn" onClick={loadAllProducts}>
                 Aplicar
               </button>
-              <button
-                className="clear-filter-btn"
-                onClick={() => {
-                  setMinPrice("");
-                  setMaxPrice("");
-                  // Optionally trigger a reload of all products immediately
-                  // loadAllProducts();
-                  // But the useEffect with loadAllProducts depends on minPrice/maxPrice change?
-                  // No, loadAllProducts is only triggered on effect mount or when loadAllProducts is called manually.
-                  // Actually, loadAllProducts is in the dependency array of useEffect.
-                  // So clearing them will trigger the effect if loadAllProducts is recalculated.
-                  // Wait, loadAllProducts depends on minPrice and maxPrice because of the useCallback dependencies.
-                  // So changing minPrice/maxPrice will recreate loadAllProducts, which triggers the effect.
-                }}
-              >
+              <button className="clear-filter-btn" onClick={handleClearFilters}>
                 Limpiar
               </button>
             </div>
           </div>
 
+          {/* Sale toggle */}
           <div className="sidebar-section toggle-section">
             <span className="sidebar-label">Solo en oferta</span>
             <label className="switch">
@@ -199,14 +183,9 @@ export default function Products() {
           </div>
         </aside>
 
-        {/* Main Content */}
+        {/* Main content */}
         <main className="products-main-content">
-          <div className="products-breadcrumb">
-            <Link to="/">Inicio</Link>
-            <span className="separator">›</span>
-            <span className="current">Productos</span>
-          </div>
-
+          {/* Title and sort controls */}
           <div className="products-header-bar">
             <div>
               <h1 className="products-main-title">Catálogo</h1>
@@ -219,7 +198,11 @@ export default function Products() {
               <span className="sort-label">Ordenar por:</span>
               <select
                 value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value as any)}
+                onChange={(e) =>
+                  setSortOrder(
+                    e.target.value as "PRICE_ASC" | "PRICE_DESC" | "NAME_ASC",
+                  )
+                }
                 className="sort-select"
               >
                 <option value="PRICE_ASC">Precio: Menor a Mayor</option>
@@ -233,12 +216,16 @@ export default function Products() {
             Mostrando {displayProducts.length} resultados
           </div>
 
+          {/* Loading state */}
           {isLoading && <p className="status-message">Cargando productos...</p>}
+
+          {/* Error state */}
           {!isLoading && error && (
             <p className="status-message error">{error}</p>
           )}
 
-          {!isLoading && !error && (
+          {/* Products grid and pagination */}
+          {!isLoading && !error && displayProducts.length > 0 && (
             <>
               <div className="products-grid">
                 {paginatedProducts.map((product) => (
@@ -276,6 +263,14 @@ export default function Products() {
                 </div>
               )}
             </>
+          )}
+
+          {/* Empty state */}
+          {!isLoading && !error && displayProducts.length === 0 && (
+            <div className="empty-state">
+              <p>No se encontraron productos con los filtros seleccionados.</p>
+              <button onClick={handleClearFilters}>Limpiar filtros</button>
+            </div>
           )}
         </main>
       </div>
