@@ -1,0 +1,46 @@
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  text-align: center;
+  background-color: #0f0f1a;
+}
+
+.not-found__icon {
+  font-size: 5rem;
+  color: #1e90ff;
+  margin-bottom: 1rem;
+}
+
+.not-found__code {
+  font-size: 7rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.not-found__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.not-found__message {
+  font-size: 1.1rem;
+  color: #a0a0b8;
+  max-width: 420px;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.not-found__actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
