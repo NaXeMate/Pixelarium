@@ -30,6 +30,15 @@ export async function deleteProduct(id: number): Promise<void> {
   return apiRequest<void>("DELETE", `/products/${id}`);
 }
 
+export async function searchProducts(
+  query: string,
+): Promise<ProductResponse[]> {
+  return apiRequest<ProductResponse[]>(
+    "GET",
+    `/products/search?query=${encodeURIComponent(query)}`, // encodeURIComponent avoids spacing or special characters issues with the URL.
+  );
+}
+
 export async function getProductsByCategory(
   category: Category,
 ): Promise<ProductResponse[]> {
