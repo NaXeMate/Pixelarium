@@ -48,7 +48,7 @@ export default function Register() {
         "El email no es válido. Asegúrate de que el formato está bien escrito.";
     }
 
-    let isValid = true;
+    let isValid;
 
     if (!birthDate) {
       setBirthDateError("La fecha de nacimiento es obligatoria.");
