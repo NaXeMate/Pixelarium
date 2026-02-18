@@ -7,8 +7,10 @@ import Login from "../pages/login";
 import Register from "../pages/register";
 import NotFoundPage from "../pages/notFound";
 import ErrorPage from "../pages/error";
+import ProtectedRoute from "../components/common/protectedRoute";
 
 export const router = createBrowserRouter([
+  // Public routes
   {
     path: "/",
     element: <Home />,
@@ -22,18 +24,36 @@ export const router = createBrowserRouter([
     path: "/product/:id",
     element: <ProductDetail />,
   },
-  {
-    path: "/cart",
-    element: <Cart />,
-  },
+
+  // Unlogued users routes
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <ProtectedRoute requireAuth={false}>
+        <Login />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/register",
-    element: <Register />,
+    element: (
+      <ProtectedRoute requireAuth={false}>
+        <Register />
+      </ProtectedRoute>
+    ),
   },
+
+  // Logued users routes
+  {
+    path: "/cart",
+    element: (
+      <ProtectedRoute requireAuth={true}>
+        <Cart />
+      </ProtectedRoute>
+    ),
+  },
+
+  // Not found route
   {
     path: "*",
     element: <NotFoundPage />,
