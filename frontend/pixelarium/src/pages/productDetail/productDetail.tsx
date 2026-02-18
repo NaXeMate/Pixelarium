@@ -4,6 +4,7 @@ import Header from "../../components/layout/header/header";
 import Footer from "../../components/layout/footer/footer";
 import { getProductById } from "../../services/productService";
 import { useCart } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
 import type { ProductResponse } from "../../types";
 import "./productDetail.css";
 
@@ -11,6 +12,7 @@ export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addToCart, items } = useCart();
+  const { user } = useAuth();
 
   const [product, setProduct] = useState<ProductResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -161,35 +163,44 @@ export default function ProductDetail() {
             <p className="product-description">{product.description}</p>
 
             <div className="add-to-cart-container">
-              <button
-                className="add-to-cart-btn"
-                onClick={handleAddToCart}
-                disabled={product.stock <= 0 || isStockLimitReached}
-              >
-                {product.stock <= 0 ? (
-                  "Agotado"
-                ) : isStockLimitReached ? (
-                  "Límite de stock alcanzado"
-                ) : (
-                  <>
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                      <line x1="3" y1="6" x2="21" y2="6"></line>
-                      <path d="M16 10a4 4 0 0 1-8 0"></path>
-                    </svg>
-                    Añadir al carrito
-                  </>
-                )}
-              </button>
+              {!user ? (
+                <button
+                  className="add-to-cart-btn login-required-btn"
+                  onClick={() => navigate("/login")}
+                >
+                  Iniciar sesión
+                </button>
+              ) : (
+                <button
+                  className="add-to-cart-btn"
+                  onClick={handleAddToCart}
+                  disabled={product.stock <= 0 || isStockLimitReached}
+                >
+                  {product.stock <= 0 ? (
+                    "Agotado"
+                  ) : isStockLimitReached ? (
+                    "Límite de stock alcanzado"
+                  ) : (
+                    <>
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                      </svg>
+                      Añadir al carrito
+                    </>
+                  )}
+                </button>
+              )}
             </div>
 
             {/* Technical Details */}

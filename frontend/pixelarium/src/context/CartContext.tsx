@@ -95,7 +95,8 @@ export function CartProvider({ children }: CartProviderProps) {
    */
   const getTotalPrice = () => {
     return items.reduce(
-      (total, item) => total + item.product.price * item.quantity,
+      (total, item) =>
+        total + (item.product.salePrice || item.product.price) * item.quantity,
       0,
     );
   };
