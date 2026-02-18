@@ -3,10 +3,12 @@ import Header from "../../components/layout/header/header";
 import Footer from "../../components/layout/footer/footer";
 import ProductCard from "../../components/layout/productCard/productCard";
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import type { ProductResponse, Category } from "../../types";
 import {
   getAllProducts,
   getProductsByPriceRange,
+  searchProducts,
 } from "../../services/productService";
 
 export default function Products() {
@@ -25,6 +27,9 @@ export default function Products() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Read search query from URL params (set by the Header search bar)
+  const [searchParams] = useSearchParams();
+
   const ITEMS_PER_PAGE = 8;
 
   const categories = [
@@ -36,7 +41,7 @@ export default function Products() {
     { id: "APPLE", label: "Apple" },
   ] as const;
 
-  // Fetches products from backend: all or filtered by price range
+  // Fetches all products or filtered by price range
   const loadAllProducts = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -61,12 +66,31 @@ export default function Products() {
     }
   }, [minPrice, maxPrice]);
 
-  // Load products on mount and whenever loadAllProducts changes (price range change)
+  // On mount: if there's a search param in the URL, run a search;
+  // otherwise load all products normally
   useEffect(() => {
-    loadAllProducts();
-  }, [loadAllProducts]);
+    const queryFromUrl = searchParams.get("search");
 
-  // Client-side filtering and sorting
+    if (queryFromUrl) {
+      const runSearch = async () => {
+        try {
+          setIsLoading(true);
+          setError("");
+          const data = await searchProducts(queryFromUrl);
+          setProducts(data);
+        } catch (err) {
+          setError("Error al buscar productos");
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      runSearch();
+    } else {
+      loadAllProducts();
+    }
+  }, [loadAllProducts, searchParams]);
+
+  // Client-side filtering and sorting over the fetched products
   useEffect(() => {
     let result = [...products];
 
@@ -101,6 +125,7 @@ export default function Products() {
     setCurrentPage(1); // Reset to page 1 whenever filters change
   }, [products, selectedCategory, onlyOnSale, sortOrder]);
 
+  // Clears all active filters and reloads full product list
   const handleClearFilters = () => {
     setMinPrice("");
     setMaxPrice("");
@@ -185,10 +210,14 @@ export default function Products() {
 
         {/* Main content */}
         <main className="products-main-content">
-          {/* Title and sort controls */}
+          {/* Title, search context indicator and sort controls */}
           <div className="products-header-bar">
             <div>
-              <h1 className="products-main-title">Catálogo</h1>
+              <h1 className="products-main-title">
+                {searchParams.get("search")
+                  ? `Resultados para "${searchParams.get("search")}"`
+                  : "Catálogo"}
+              </h1>
               <p className="products-subtitle">
                 Explora nuestra colección de tecnología y entretenimiento.
               </p>

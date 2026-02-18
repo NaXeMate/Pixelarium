@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import { useCart } from "../../../context/CartContext";
 import logo from "../../../assets/logo_brand_image/logo_white_font_no_background.png";
@@ -7,6 +8,16 @@ import "./header.css";
 export default function Header() {
   const { user, logout } = useAuth();
   const { getTotalItems } = useCart();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = () => {
+    const trimmed = searchQuery.trim();
+    if (!trimmed) return;
+    // Navigate to products page with search query as URL parameter
+    navigate(`/products?search=${encodeURIComponent(trimmed)}`);
+    setSearchQuery("");
+  };
 
   return (
     <header className="header">
@@ -16,19 +27,22 @@ export default function Header() {
           <img src={logo} alt="Pixelarium" className="logo-image" />
         </Link>
 
-        {/* Buscador */}
+        {/* Search bar */}
         <div className="header-search">
           <input
             type="text"
             placeholder="Buscar juegos, accesorios, tecnología..."
             className="search-input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
-          <button className="search-button">
+          <button className="search-button" onClick={handleSearch}>
             <i className="bi bi-search"></i>
           </button>
         </div>
 
-        {/* Navegación */}
+        {/* Navigation */}
         <nav className="header-nav">
           <Link to="/" className="nav-link">
             Inicio
@@ -38,9 +52,9 @@ export default function Header() {
           </Link>
         </nav>
 
-        {/* Acciones */}
+        {/* Actions */}
         <div className="header-actions">
-          {/* Carrito */}
+          {/* Cart */}
           <Link to="/cart" className="cart-button">
             <i className="bi bi-cart3"></i>
             {getTotalItems() > 0 && (
@@ -48,7 +62,7 @@ export default function Header() {
             )}
           </Link>
 
-          {/* Usuario */}
+          {/* User */}
           {user ? (
             <div className="user-menu">
               <span className="user-name">
