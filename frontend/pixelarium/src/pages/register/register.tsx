@@ -7,6 +7,8 @@ import "./register.css";
 export default function Register() {
   const { register } = useAuth();
   const navigate = useNavigate();
+  const [birthDate, setBirthDate] = useState("");
+  const [birthDateError, setBirthDateError] = useState("");
 
   const [formData, setFormData] = useState({
     userName: "",
@@ -27,6 +29,15 @@ export default function Register() {
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof typeof formData, string>> = {};
 
+    const today = new Date();
+    const birth = new Date(birthDate);
+    const age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    const realAge =
+      monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())
+        ? age - 1
+        : age;
+
     if (formData.userName.trim().length < 3) {
       newErrors.userName =
         "El nombre de usuario debe tener, al menos, tres letras.";
@@ -35,6 +46,18 @@ export default function Register() {
     if (!formData.email.includes("@")) {
       newErrors.email =
         "El email no es válido. Asegúrate de que el formato está bien escrito.";
+    }
+
+    let isValid = true;
+
+    if (!birthDate) {
+      setBirthDateError("La fecha de nacimiento es obligatoria.");
+      isValid = false;
+    } else if (realAge < 18) {
+      setBirthDateError("Debes ser mayor de 18 años para registrarte.");
+      isValid = false;
+    } else {
+      setBirthDateError("");
     }
 
     if (formData.firstName.trim().length === 0) {
@@ -177,6 +200,22 @@ export default function Register() {
                 <span className="field-error">{errors.lastName}</span>
               )}
             </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="birthDate">Fecha de nacimiento</label>
+            <input
+              id="birthDate"
+              name="birthDate"
+              type="date"
+              value={birthDate}
+              onChange={(e) => setBirthDate(e.target.value)}
+              max={new Date().toISOString().split("T")[0]}
+              disabled={isLoading}
+            />
+            {birthDateError && (
+              <span className="field-error">{birthDateError}</span>
+            )}
           </div>
 
           {/* Password field */}
