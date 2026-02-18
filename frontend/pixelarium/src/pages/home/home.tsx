@@ -5,7 +5,7 @@ import Header from "../../components/layout/header/header";
 import Footer from "../../components/layout/footer/footer";
 import { getSaleOffers } from "../../services/productService";
 import type { ProductResponse } from "../../types";
-import { formatPrice } from "../../utils/formatUtils";
+import ProductCard from "../../components/layout/productCard/productCard";
 import "./home.css";
 
 /* ── Static data ── */
@@ -23,21 +23,6 @@ const categories = [
 ];
 
 /* ── Helpers ── */
-
-function discountPercent(price: number, salePrice: number): number {
-  return Math.round(((price - salePrice) / price) * 100);
-}
-
-function categoryLabel(cat: string): string {
-  const map: Record<string, string> = {
-    NINTENDO_SWITCH: "Nintendo Switch",
-    NINTENDO_SWITCH_2: "Nintendo Switch 2",
-    PC: "PC",
-    APPLE: "Apple",
-    ACCESSORIES: "Accesorios",
-  };
-  return map[cat] ?? cat;
-}
 
 /* ── Component ── */
 
@@ -174,42 +159,7 @@ export default function Home() {
               <p>Cargando ofertas...</p>
             ) : (
               featuredProducts.map((product) => (
-                <Link
-                  key={product.id}
-                  to={`/product/${product.id}`}
-                  className="product-card"
-                >
-                  <div className="product-card-image-wrapper">
-                    <img
-                      src={product.imagePath || "/products/placeholder.png"}
-                      alt={product.name}
-                      className="product-card-image"
-                    />
-                    {product.salePrice && (
-                      <span className="product-badge sale">
-                        OFERTA −
-                        {discountPercent(product.price, product.salePrice)}%
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="product-card-body">
-                    <span className="product-category-tag">
-                      {categoryLabel(product.category)}
-                    </span>
-                    <h3 className="product-card-name">{product.name}</h3>
-                    <p className="product-card-desc">{product.description}</p>
-
-                    <div className="product-card-pricing">
-                      <span className="product-sale-price">
-                        {product.salePrice && formatPrice(product.salePrice)}
-                      </span>
-                      <span className="product-original-price">
-                        {formatPrice(product.price)}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                <ProductCard key={product.id} product={product} />
               ))
             )}
           </div>
