@@ -193,6 +193,8 @@
   box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
 }
 
+/* Responsive */
+
 /* Wide screens — expand search bar */
 @media (min-width: 1370px) {
   .header-search {
@@ -200,7 +202,7 @@
   }
 }
 
-/* Responsive */
+/* Medium screens — collapse navigation */
 @media (max-width: 1024px) {
   .header-container {
     gap: 1rem;
@@ -212,6 +214,7 @@
   }
 }
 
+/* Small screens — collapse header */
 @media (max-width: 768px) {
   .header-container {
     flex-wrap: wrap;

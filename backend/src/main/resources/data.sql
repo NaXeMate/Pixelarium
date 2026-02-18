@@ -17,87 +17,87 @@ VALUES
   -- NINTENDO SWITCH
   (1, 'The Legend of Zelda: Tears of the Kingdom',
      'Adventure game for Nintendo Switch.',
-     69.99, 59.99, '/images/zelda_totk.jpg', 50, 'NINTENDO_SWITCH'),
+     69.99, 59.99, '/products/zelda_totk.png', 50, 'NINTENDO_SWITCH'),
 
   (2, 'Metroid Prime Remastered',
      'First-person adventure for Nintendo Switch.',
-     39.99, NULL, '/images/metroid_prime.jpg', 30, 'NINTENDO_SWITCH'),
+     39.99, NULL, '/products/metroid_prime.png', 30, 'NINTENDO_SWITCH'),
 
   (6, 'Super Mario Odyssey',
      'Platform adventure game for Nintendo Switch.',
-     59.99, 49.99, '/images/mario_odyssey.jpg', 45, 'NINTENDO_SWITCH'),
+     59.99, 49.99, '/products/mario_odyssey.png', 45, 'NINTENDO_SWITCH'),
 
   (7, 'Animal Crossing: New Horizons',
      'Life simulation game for Nintendo Switch.',
-     59.99, NULL, '/images/animal_crossing.jpg', 60, 'NINTENDO_SWITCH'),
+     59.99, NULL, '/products/animal_crossing.png', 60, 'NINTENDO_SWITCH'),
 
   (8, 'Splatoon 3',
      'Third-person shooter for Nintendo Switch.',
-     59.99, 54.99, '/images/splatoon3.jpg', 35, 'NINTENDO_SWITCH'),
+     59.99, 54.99, '/products/splatoon3.png', 35, 'NINTENDO_SWITCH'),
 
   (9, 'Pokémon Scarlet',
      'RPG adventure for Nintendo Switch.',
-     59.99, NULL, '/images/pokemon_scarlet.jpg', 40, 'NINTENDO_SWITCH'),
+     59.99, NULL, '/products/pokemon_scarlet.png', 40, 'NINTENDO_SWITCH'),
 
   -- NINTENDO SWITCH 2
   (10, 'Mario Kart World',
       'Racing game for Nintendo Switch 2.',
-      69.99, NULL, '/images/mario_kart_9.jpg', 100, 'NINTENDO_SWITCH_2'),
+      69.99, NULL, '/products/mario_kart_9.png', 100, 'NINTENDO_SWITCH_2'),
 
   (11, 'Metroid Prime 4 Nintendo Switch 2 Edition',
       'First-person adventure for Nintendo Switch 2.',
-      69.99, 64.99, '/images/metroid_prime_4.jpg', 80, 'NINTENDO_SWITCH_2'),
+      69.99, 64.99, '/products/metroid_prime_4.png', 80, 'NINTENDO_SWITCH_2'),
 
   -- ACCESSORIES
   (3, 'Nintendo Switch Pro Controller',
      'Wireless controller for Nintendo Switch.',
-     69.99, 54.99, '/images/pro_controller.jpg', 40, 'ACCESSORIES'),
+     69.99, 54.99, '/products/pro_controller.png', 40, 'ACCESSORIES'),
 
   (12, 'Nintendo Switch Carrying Case',
       'Protective carrying case for Nintendo Switch.',
-      24.99, 19.99, '/images/switch_case.jpg', 75, 'ACCESSORIES'),
+      24.99, 19.99, '/products/switch_case.png', 75, 'ACCESSORIES'),
 
   (13, 'USB-C Charging Cable 3m',
       'Long USB-C cable for gaming devices.',
-      14.99, NULL, '/images/usbc_cable.jpg', 120, 'ACCESSORIES'),
+      14.99, NULL, '/products/usbc_cable.png', 120, 'ACCESSORIES'),
 
   (14, 'Gaming Headset RGB',
       'Surround sound gaming headset with RGB lighting.',
-      89.99, 74.99, '/images/gaming_headset.jpg', 55, 'ACCESSORIES'),
+      89.99, 74.99, '/products/gaming_headset.png', 55, 'ACCESSORIES'),
 
   -- APPLE
   (4, 'Apple AirPods Pro (2nd gen)',
      'Noise-cancelling wireless earbuds.',
-     279.00, 249.00, '/images/airpods_pro_2.jpg', 25, 'APPLE'),
+     279.00, 249.00, '/products/airpods_pro_2.png', 25, 'APPLE'),
 
   (15, 'Apple Magic Keyboard',
       'Wireless keyboard for Mac and iPad.',
-      129.00, NULL, '/images/magic_keyboard.jpg', 30, 'APPLE'),
+      129.00, NULL, '/products/magic_keyboard.png', 30, 'APPLE'),
 
   (16, 'Apple Magic Mouse',
       'Wireless rechargeable mouse.',
-      89.00, 79.00, '/images/magic_mouse.jpg', 40, 'APPLE'),
+      89.00, 79.00, '/products/magic_mouse.png', 40, 'APPLE'),
 
   (17, 'Apple AirTag 4 Pack',
       'Item tracker for finding your belongings.',
-      99.00, NULL, '/images/airtag_4pack.jpg', 50, 'APPLE'),
+      99.00, NULL, '/products/airtag_4pack.png', 50, 'APPLE'),
 
   -- PC
   (5, 'RTX 3060 12GB',
      'NVIDIA RTX 3060 12GB graphics card.',
-     349.00, 329.00, '/images/rtx3060_12gb.jpg', 15, 'PC'),
+     349.00, 329.00, '/products/rtx3060_12gb.png', 15, 'PC'),
 
   (18, 'RTX 4070 Ti',
       'NVIDIA RTX 4070 Ti graphics card.',
-      799.00, NULL, '/images/rtx4070ti.jpg', 10, 'PC'),
+      799.00, NULL, '/products/rtx4070ti.png', 10, 'PC'),
 
   (19, 'AMD Ryzen 7 7800X3D',
       'High-performance gaming processor.',
-      449.00, 429.00, '/images/ryzen_7800x3d.jpg', 20, 'PC'),
+      449.00, 429.00, '/products/ryzen_7800x3d.png', 20, 'PC'),
 
   (20, 'Corsair Vengeance DDR5 32GB',
       '32GB DDR5 RAM kit for gaming PCs.',
-      149.00, 139.00, '/images/corsair_ddr5.jpg', 35, 'PC');
+      149.00, 139.00, '/products/corsair_ddr5.png', 35, 'PC');
 
 -- ===== ORDERS =====
 -- order_date: format 'YYYY-MM-DDTHH:MM:SS' for LocalDateTime

@@ -20,7 +20,7 @@ export default function Header() {
         <div className="header-search">
           <input
             type="text"
-            placeholder="Buscar juegos, libros, tecnología..."
+            placeholder="Buscar juegos, accesorios, tecnología..."
             className="search-input"
           />
           <button className="search-button">
