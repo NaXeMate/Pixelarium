@@ -46,11 +46,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
-.product-image {
+.product-card .product-image {
   max-width: 100%;
   max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
@@ -59,7 +62,7 @@
   transform: scale(1.05);
 }
 
-.product-badge {
+.product-card .product-badge {
   position: absolute;
   top: 12px;
   padding: 4px 8px;
@@ -70,20 +73,20 @@
   z-index: 10;
 }
 
-.category-badge {
+.product-card .category-badge {
   left: 12px;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
   backdrop-filter: blur(4px);
 }
 
-.discount-badge {
+.product-card .discount-badge {
   right: 8px;
   top: 8px;
   left: auto;
   padding: 2px 6px;
   font-size: 0.7rem;
-  background-color: #ff4757;
+  background-color: red;
   color: white;
 }
 

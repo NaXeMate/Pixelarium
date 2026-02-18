@@ -182,9 +182,6 @@ export default function ProductDetail() {
                   "Agotado"
                 )}
               </button>
-              <p className="shipping-info">
-                Envío gratuito para miembros Premium.
-              </p>
             </div>
 
             {/* Technical Details */}
