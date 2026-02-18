@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import type { ProductResponse } from "../../../types/productTypes";
+import { formatPrice } from "../../../utils/formatUtils";
 import "./productCard.css";
 
 interface ProductCardProps {
@@ -54,11 +55,11 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="product-price-container">
             {hasDiscount && (
               <span className="original-price">
-                ${product.price.toFixed(2)}
+                {formatPrice(product.price)}
               </span>
             )}
             <span className="current-price">
-              ${(product.salePrice || product.price).toFixed(2)}
+              {formatPrice(product.salePrice || product.price)}
             </span>
           </div>
         </div>

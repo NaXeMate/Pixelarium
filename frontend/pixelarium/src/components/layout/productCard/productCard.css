@@ -78,7 +78,11 @@
 }
 
 .discount-badge {
-  right: 12px;
+  right: 8px;
+  top: 8px;
+  left: auto;
+  padding: 2px 6px;
+  font-size: 0.7rem;
   background-color: #ff4757;
   color: white;
 }

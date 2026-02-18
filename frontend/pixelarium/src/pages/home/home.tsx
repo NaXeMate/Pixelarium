@@ -5,6 +5,7 @@ import Header from "../../components/layout/header/header";
 import Footer from "../../components/layout/footer/footer";
 import { getSaleOffers } from "../../services/productService";
 import type { ProductResponse } from "../../types";
+import { formatPrice } from "../../utils/formatUtils";
 import "./home.css";
 
 /* ── Static data ── */
@@ -201,10 +202,10 @@ export default function Home() {
 
                     <div className="product-card-pricing">
                       <span className="product-sale-price">
-                        ${product.salePrice?.toFixed(2)}
+                        {product.salePrice && formatPrice(product.salePrice)}
                       </span>
                       <span className="product-original-price">
-                        ${product.price.toFixed(2)}
+                        {formatPrice(product.price)}
                       </span>
                     </div>
                   </div>

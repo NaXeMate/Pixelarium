@@ -382,6 +382,8 @@
 .product-badge.sale {
   background: linear-gradient(135deg, #ff4757, #ff6b81);
   color: #ffffff;
+  left: auto;
+  right: 12px;
 }
 
 .product-card-body {
